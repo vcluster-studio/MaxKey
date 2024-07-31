@@ -6,15 +6,16 @@
     *ngIf="switchTab"
     style="margin-bottom: 8px; width: 100%"
   >
-    <label nz-radio-button nzValue="normal" style="width: 50%; text-align: center">
+    <label nz-radio-button nzValue="normal" style="text-align: center">
       <i nz-icon nzType="user" nzTheme="outline"></i>
       {{ 'mxk.login.tab-credentials' | i18n }}
     </label>
-    <label nz-radio-button nzValue="mobile" style="width: 50%; text-align: center" class="d-none">
+    <label class="d-none" nz-radio-button nzValue="mobile" style="text-align: center">
       <i nz-icon nzType="mobile" nzTheme="outline"></i>
       {{ 'mxk.login.tab-mobile' | i18n }}
     </label>
-    <label nz-radio-button nzValue="qrscan" style="width: 50%; text-align: center" (click)="getQrCode()">
+    <label nz-radio-button nzValue="qrscan" style="width: 50%; text-align: center"
+           (click)="getQrCode()" *ngIf="socials.qrScan != null">
       <i nz-icon nzType="qrcode" nzTheme="outline"></i>{{ 'mxk.login.tab-qrscan' | i18n }}
     </label>
   </nz-radio-group>
@@ -103,7 +104,7 @@
   </nz-form-item>
 </form>
 <div class="other" *ngIf="loginType == 'normal'">
-  {{ 'app.login.sign-in-with' | i18n }}
+  <span *ngIf="socials.providers.length > 0">{{ 'app.login.sign-in-with' | i18n }}</span>
   <ng-container *ngFor="let provd of socials.providers">
     <i nz-tooltip nzTooltipTitle="{{ provd.providerName }}" (click)="socialauth(provd.provider)" nz-icon class="icon">
       <img src="{{ provd.icon }}" style="width: 32px" />
