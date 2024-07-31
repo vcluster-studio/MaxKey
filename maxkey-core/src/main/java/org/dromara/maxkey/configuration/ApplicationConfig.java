@@ -58,7 +58,7 @@ public class ApplicationConfig {
     @Value("${maxkey.server.authz.uri}")
     private String authzUri;
     
-    @Value("${maxkey.server.frontend.uri:http://sso.maxkey.top:4200}")
+    @Value("${maxkey.server.frontend.uri}")
     private String frontendUri;
 
     @Value("${server.port:8080}")
