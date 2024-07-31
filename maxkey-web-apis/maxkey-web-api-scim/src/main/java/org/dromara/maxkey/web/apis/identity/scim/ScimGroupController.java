@@ -23,8 +23,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.dromara.maxkey.entity.Groups;
-import org.dromara.maxkey.entity.UserInfo;
+import org.dromara.maxkey.entity.idm.Groups;
+import org.dromara.maxkey.entity.idm.UserInfo;
 import org.dromara.maxkey.persistence.service.GroupMemberService;
 import org.dromara.maxkey.persistence.service.GroupsService;
 import org.dromara.maxkey.util.DateUtils;
@@ -53,7 +53,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RestController
 @RequestMapping(value = "/api/idm/SCIM/v2/Groups")
 public class ScimGroupController {
-	final static Logger _logger = LoggerFactory.getLogger(ScimGroupController.class);
+	static final  Logger _logger = LoggerFactory.getLogger(ScimGroupController.class);
 	
 	@Autowired
 	GroupsService groupsService;

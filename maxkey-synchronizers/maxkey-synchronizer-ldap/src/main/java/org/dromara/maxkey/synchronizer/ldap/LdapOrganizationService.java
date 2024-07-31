@@ -28,9 +28,9 @@ import javax.naming.directory.SearchResult;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dromara.maxkey.constants.ConstsStatus;
-import org.dromara.maxkey.entity.HistorySynchronizer;
-import org.dromara.maxkey.entity.Organizations;
 import org.dromara.maxkey.entity.SynchroRelated;
+import org.dromara.maxkey.entity.history.HistorySynchronizer;
+import org.dromara.maxkey.entity.idm.Organizations;
 import org.dromara.maxkey.ldap.LdapUtils;
 import org.dromara.maxkey.ldap.constants.OrganizationalUnit;
 import org.dromara.maxkey.synchronizer.AbstractSynchronizerService;
@@ -41,7 +41,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class LdapOrganizationService extends AbstractSynchronizerService  implements ISynchronizerService{
-	final static Logger _logger = LoggerFactory.getLogger(LdapOrganizationService.class);
+	static final  Logger _logger = LoggerFactory.getLogger(LdapOrganizationService.class);
 
 	LdapUtils ldapUtils;
 	

@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.dromara.maxkey.constants.ConstsStatus;
 import org.dromara.maxkey.entity.SynchroRelated;
-import org.dromara.maxkey.entity.UserInfo;
+import org.dromara.maxkey.entity.idm.UserInfo;
 import org.dromara.maxkey.synchronizer.AbstractSynchronizerService;
 import org.dromara.maxkey.synchronizer.ISynchronizerService;
 import org.dromara.maxkey.synchronizer.workweixin.entity.WorkWeixinUsers;
@@ -34,7 +34,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class WorkweixinUsersService extends AbstractSynchronizerService implements ISynchronizerService{
-	final static Logger _logger = LoggerFactory.getLogger(WorkweixinUsersService.class);
+	static final  Logger _logger = LoggerFactory.getLogger(WorkweixinUsersService.class);
 	
 	String access_token;
 	

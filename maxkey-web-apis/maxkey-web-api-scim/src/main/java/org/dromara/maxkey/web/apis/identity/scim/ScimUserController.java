@@ -23,8 +23,8 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dromara.maxkey.constants.ConstsStatus;
-import org.dromara.maxkey.entity.Groups;
-import org.dromara.maxkey.entity.UserInfo;
+import org.dromara.maxkey.entity.idm.Groups;
+import org.dromara.maxkey.entity.idm.UserInfo;
 import org.dromara.maxkey.persistence.service.GroupsService;
 import org.dromara.maxkey.persistence.service.UserInfoService;
 import org.dromara.maxkey.web.apis.identity.scim.resources.ScimEnterprise;
@@ -67,7 +67,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RestController
 @RequestMapping(value = "/api/idm/SCIM/v2/Users")
 public class ScimUserController {
-	final static Logger _logger = LoggerFactory.getLogger(ScimUserController.class);
+	static final  Logger _logger = LoggerFactory.getLogger(ScimUserController.class);
 	@Autowired
 	private UserInfoService userInfoService;
 	

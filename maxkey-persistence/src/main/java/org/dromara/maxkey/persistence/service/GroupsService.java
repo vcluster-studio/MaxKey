@@ -25,9 +25,9 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dromara.maxkey.constants.ConstsStatus;
-import org.dromara.maxkey.entity.Groups;
 import org.dromara.maxkey.entity.Institutions;
-import org.dromara.maxkey.entity.Roles;
+import org.dromara.maxkey.entity.idm.Groups;
+import org.dromara.maxkey.entity.permissions.Roles;
 import org.dromara.maxkey.persistence.mapper.GroupsMapper;
 import org.dromara.maxkey.util.StrUtils;
 import org.dromara.mybatis.jpa.JpaService;
@@ -45,7 +45,7 @@ public class GroupsService  extends JpaService<Groups> implements Serializable {
      */
     private static final long serialVersionUID = -4156671926199393550L;
     
-    final static Logger _logger = LoggerFactory.getLogger(GroupsService.class);
+    static final  Logger _logger = LoggerFactory.getLogger(GroupsService.class);
     @JsonIgnore
     @Autowired
     GroupMemberService groupMemberService;

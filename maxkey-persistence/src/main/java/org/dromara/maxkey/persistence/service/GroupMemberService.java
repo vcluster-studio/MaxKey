@@ -19,9 +19,9 @@ package org.dromara.maxkey.persistence.service;
 
 import java.util.List;
 
-import org.dromara.maxkey.entity.GroupMember;
-import org.dromara.maxkey.entity.Groups;
-import org.dromara.maxkey.entity.UserInfo;
+import org.dromara.maxkey.entity.idm.GroupMember;
+import org.dromara.maxkey.entity.idm.Groups;
+import org.dromara.maxkey.entity.idm.UserInfo;
 import org.dromara.maxkey.persistence.mapper.GroupMemberMapper;
 import org.dromara.mybatis.jpa.JpaService;
 import org.dromara.mybatis.jpa.entity.JpaPageResults;
@@ -31,7 +31,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class GroupMemberService  extends JpaService<GroupMember>{
-	final static Logger _logger = LoggerFactory.getLogger(GroupMemberService.class);
+	static final  Logger _logger = LoggerFactory.getLogger(GroupMemberService.class);
 	
 	public GroupMemberService() {
 		super(GroupMemberMapper.class);

@@ -30,7 +30,7 @@ import org.dromara.maxkey.authn.web.AuthorizationUtils;
 import org.dromara.maxkey.configuration.ApplicationConfig;
 import org.dromara.maxkey.constants.ConstsLoginType;
 import org.dromara.maxkey.constants.ConstsStatus;
-import org.dromara.maxkey.entity.UserInfo;
+import org.dromara.maxkey.entity.idm.UserInfo;
 import org.dromara.maxkey.password.onetimepwd.AbstractOtpAuthn;
 import org.dromara.maxkey.password.onetimepwd.MailOtpAuthnService;
 import org.dromara.maxkey.web.WebConstants;
@@ -56,10 +56,10 @@ public abstract class AbstractAuthenticationProvider {
     public static String PROVIDER_SUFFIX = "AuthenticationProvider";
     
     public class AuthType{
-    	public final static String NORMAL 	= "normal";
-    	public final static String TFA 		= "tfa";
-    	public final static String MOBILE 	= "mobile";
-    	public final static String TRUSTED 	= "trusted";
+    	public static final  String NORMAL 	= "normal";
+    	public static final  String TFA 		= "tfa";
+    	public static final  String MOBILE 	= "mobile";
+    	public static final  String TRUSTED 	= "trusted";
     }
     
     protected ApplicationConfig applicationConfig;

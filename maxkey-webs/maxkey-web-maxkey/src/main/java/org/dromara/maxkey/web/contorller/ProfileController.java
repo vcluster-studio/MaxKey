@@ -20,7 +20,7 @@ package org.dromara.maxkey.web.contorller;
 import org.apache.commons.lang3.StringUtils;
 import org.dromara.maxkey.authn.annotation.CurrentUser;
 import org.dromara.maxkey.entity.Message;
-import org.dromara.maxkey.entity.UserInfo;
+import org.dromara.maxkey.entity.idm.UserInfo;
 import org.dromara.maxkey.persistence.service.FileUploadService;
 import org.dromara.maxkey.persistence.service.UserInfoService;
 import org.slf4j.Logger;
@@ -46,10 +46,10 @@ public class ProfileController {
 	FileUploadService fileUploadService;
 
     @RequestMapping(value = { "/get" }, produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<?> get(@CurrentUser UserInfo currentUser) {
+	public Message<?> get(@CurrentUser UserInfo currentUser) {
         UserInfo userInfo = userInfoService.findByUsername(currentUser.getUsername());
 		userInfo.trans();
-        return new Message<UserInfo>(userInfo).buildResponse();
+        return new Message<UserInfo>(userInfo);
     }
 
     /**
@@ -61,7 +61,7 @@ public class ProfileController {
      */
     @ResponseBody
 	@RequestMapping(value={"/update"}, produces = {MediaType.APPLICATION_JSON_VALUE})
-	public ResponseEntity<?> update(
+	public Message<?> update(
 				@RequestBody  UserInfo userInfo,
 				@CurrentUser UserInfo currentUser,
                 BindingResult result) {
@@ -85,10 +85,10 @@ public class ProfileController {
 		}
         
         if (userInfoService.updateProfile(userInfo) > 0) {
-        	return new Message<UserInfo>(Message.SUCCESS).buildResponse();
+        	return new Message<UserInfo>(Message.SUCCESS);
         } 
         
-        return new Message<UserInfo>(Message.FAIL).buildResponse();
+        return new Message<UserInfo>(Message.FAIL);
         
     }
 
