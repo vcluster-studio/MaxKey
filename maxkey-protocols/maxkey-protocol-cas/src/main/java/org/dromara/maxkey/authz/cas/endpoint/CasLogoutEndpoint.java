@@ -21,6 +21,10 @@
 package org.dromara.maxkey.authz.cas.endpoint;
 
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.dromara.maxkey.authz.cas.endpoint.ticket.CasConstants;
 import org.dromara.maxkey.web.WebContext;
@@ -30,11 +34,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.UriUtils;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @author Crystal.Sea
@@ -59,7 +61,7 @@ public class CasLogoutEndpoint  extends CasBaseAuthorizeEndpoint{
 			@RequestParam(value = CasConstants.PARAMETER.SERVICE , required = false) String casService){
 		StringBuffer logoutUrl = new StringBuffer("/force/logout");
 		if(StringUtils.isNotBlank(casService)){
-			logoutUrl.append("?").append("redirect_uri=").append(casService);
+			logoutUrl.append("?").append("redirect_uri=").append(UriUtils.encode(casService, StandardCharsets.UTF_8));
 		}
 		return WebContext.forward(logoutUrl.toString());
 	}

@@ -17,6 +17,7 @@
 
 package org.dromara.maxkey.web.contorller;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Map.Entry;
@@ -47,6 +48,7 @@ import org.springframework.web.servlet.ModelAndView;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.util.UriUtils;
 
 @Tag(name = "1-3-单点注销接口文档模块")
 @Controller
@@ -110,7 +112,7 @@ public class LogoutEndpoint {
 		logoutUrl.append(applicationConfig.getFrontendUri()).append("/#/passport/logout");
 		if(StringUtils.isNotBlank(redirect_uri)) {
 			logoutUrl.append("?")
-				.append("redirect_uri=").append(redirect_uri);
+				.append("redirect_uri=").append(UriUtils.encode(redirect_uri, StandardCharsets.UTF_8));
 		}
 		ModelAndView modelAndView=new ModelAndView("redirect");
 		modelAndView.addObject("redirect_uri", logoutUrl);
