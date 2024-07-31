@@ -43,21 +43,23 @@ public class RedisAutoConfiguration {
      */
     @Bean
     public RedisConnectionFactory redisConnFactory(
-            @Value("${spring.redis.host}")
+            @Value("${spring.data.redis.host}")
             String host,
-            @Value("${spring.redis.port:6379}")
+            @Value("${spring.data.redis.port:6379}")
             int port,
-            @Value("${spring.redis.timeout:10000}")
+            @Value("${spring.data.redis.timeout:10000}")
             int timeout,
-            @Value("${spring.redis.password}")
+            @Value("${spring.data.redis.password}")
             String password,
-            @Value("${spring.redis.lettuce.pool.max-active:-1}")
+            @Value("${spring.data.redis.database:0}")
+            int database,
+            @Value("${spring.data.redis.lettuce.pool.max-active:-1}")
             int maxActive,
-            @Value("${spring.redis.jedis.pool.max-wait:1000}")
+            @Value("${spring.data.redis.jedis.pool.max-wait:1000}")
             int maxWait,
-            @Value("${spring.redis.jedis.pool.max-idle:100}")
+            @Value("${spring.data.redis.jedis.pool.max-idle:100}")
             int maxIdle,
-            @Value("${spring.redis.lettuce.pool.min-idle:0}")
+            @Value("${spring.data.redis.lettuce.pool.min-idle:0}")
             int minIdle) {
         _logger.debug("redisConnFactory init .");
         RedisConnectionFactory factory = new RedisConnectionFactory();
@@ -65,6 +67,7 @@ public class RedisAutoConfiguration {
         factory.setPort(port);
         factory.setTimeOut(timeout); 
         factory.setPassword(password);
+        factory.setDatabase(database);
         
         JedisPoolConfig poolConfig = new JedisPoolConfig();
         poolConfig.setMaxIdle(maxIdle);

@@ -37,6 +37,10 @@ public class RedisConnectionFactory {
          */
         public static int DEFAULT_PORT = 6379;
         /**
+         * Redis默认数据库
+         */
+        public static int DEFAULT_DATABASE = 0;
+        /**
          * 访问密码
          */
         public static String DEFAULT_AUTH = "admin";
@@ -75,6 +79,7 @@ public class RedisConnectionFactory {
     private String hostName;
     private int port;
     private String password;
+    private Integer database;
     private int timeOut;
 
     public RedisConnectionFactory() {
@@ -91,6 +96,9 @@ public class RedisConnectionFactory {
                 if (port == 0) {
                     port = DEFAULT_CONFIG.DEFAULT_PORT;
                 }
+                if (database == null) {
+                    database = DEFAULT_CONFIG.DEFAULT_DATABASE;
+                }
                 if (timeOut == 0) {
                     timeOut = DEFAULT_CONFIG.DEFAULT_TIMEOUT;
                 }
@@ -98,7 +106,7 @@ public class RedisConnectionFactory {
                 if (this.password == null || this.password.equals("") || this.password.equalsIgnoreCase("password")) {
                     this.password = null;
                 }
-                jedisPool = new JedisPool(poolConfig, hostName, port, timeOut, password);
+                jedisPool = new JedisPool(poolConfig, hostName, port, timeOut, password, database);
                 _logger.debug("init Jedis Pool successful .");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -153,6 +161,14 @@ public class RedisConnectionFactory {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getDatabase() {
+        return database;
+    }
+
+    public void setDatabase(int database) {
+        this.database = database;
     }
 
     public int getTimeOut() {
