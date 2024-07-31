@@ -52,7 +52,12 @@ public class WebXssRequestFilter  extends GenericFilterBean {
 		skipUrlMap.put("/authz/cas", "/authz/cas");
 		skipUrlMap.put("/authz/cas/", "/authz/cas/");
 		skipUrlMap.put("/authz/cas/login", "/authz/cas/login");
+		skipUrlMap.put("/authz/cas/logout", "/authz/cas/logout");
+        skipUrlMap.put("/authz/cas/validate", "/authz/cas/validate");
+        skipUrlMap.put("/authz/cas/serviceValidate", "/authz/cas/serviceValidate");
+        skipUrlMap.put("/authz/cas/p3/serviceValidate", "/authz/cas/p3/serviceValidate");
 		skipUrlMap.put("/authz/oauth/v20/authorize", "/authz/oauth/v20/authorize");
+
 		//TENCENT_IOA
 		skipUrlMap.put("/oauth2/authorize", "/oauth2/authorize");
 		
