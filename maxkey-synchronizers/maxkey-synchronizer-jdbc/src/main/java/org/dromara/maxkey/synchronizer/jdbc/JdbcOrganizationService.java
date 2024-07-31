@@ -30,10 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 @Service
@@ -84,6 +81,15 @@ public class JdbcOrganizationService extends AbstractSynchronizerService impleme
                 Object value = null;
                 if (mapper.getType().equalsIgnoreCase("String")) {
                     value = rs.getString(mapper.getColumn());
+                } else if (mapper.getType().equalsIgnoreCase("Blob")) {
+                    Blob blob = rs.getBlob(mapper.getColumn());
+                    if (blob != null) {
+                        try {
+                            value = blob.getBytes(1, (int) blob.length());
+                        } catch (Exception e) {
+                            _logger.error("{} getBlob {}", mapper.getColumn(), e);
+                        }
+                    }
                 } else {
                     value = rs.getInt(mapper.getColumn());
                 }
@@ -97,7 +103,7 @@ public class JdbcOrganizationService extends AbstractSynchronizerService impleme
             }
         }
 
-        org.setId(org.generateId());
+        // org.setId(org.generateId());
         org.setInstId(synchronizer.getInstId());
         if (meta.getColumnsMap().containsKey("status")) {
             org.setStatus(rs.getInt("status"));
@@ -150,6 +156,6 @@ public class JdbcOrganizationService extends AbstractSynchronizerService impleme
         mapperList.add(new ColumnFieldMapper("sortindex", "sortIndex", "Int"));
         mapperList.add(new ColumnFieldMapper("ldapdn", "ldapDn", "String"));
         mapperList.add(new ColumnFieldMapper("description", "description", "String"));
-        mapperList.add(new ColumnFieldMapper("status", "status", "int"));
+        mapperList.add(new ColumnFieldMapper("status", "status", "Int"));
     }
 }

@@ -74,20 +74,7 @@ public class UserInfoService extends JpaService<UserInfo> {
 	
 	@Override
     public boolean insert(UserInfo userInfo) {
-    	this.passwordEncoder(userInfo);
-        if (super.insert(userInfo)) {
-        	if(provisionService.getApplicationConfig().isProvisionSupport()) {
-                UserInfo loadUserInfo = findUserRelated(userInfo.getId());
-                provisionService.send(
-                        ProvisionTopic.USERINFO_TOPIC, 
-                        loadUserInfo,
-                        ProvisionAction.CREATE_ACTION);
-            }
-            
-            return true;
-        }
-
-        return false;
+        return this.insert(userInfo, true);
     }
     
     public boolean insert(UserInfo userInfo,boolean passwordEncoder) {
@@ -110,24 +97,31 @@ public class UserInfoService extends JpaService<UserInfo> {
     }
 	
     @Override
-    public boolean update(UserInfo userInfo) {
-    	ChangePassword changePassword = this.passwordEncoder(userInfo);
-        if (super.update(userInfo)) {
-        	if(provisionService.getApplicationConfig().isProvisionSupport()) {
-                UserInfo loadUserInfo = findUserRelated(userInfo.getId());
-                accountUpdate(loadUserInfo);
-                provisionService.send(
-                        ProvisionTopic.USERINFO_TOPIC, 
-                        loadUserInfo,
-                        ProvisionAction.UPDATE_ACTION);
-            }
-            if(userInfo.getPassword() != null) {
-            	changePasswordProvisioning(changePassword);
-            }
-            return true;
-        }
-        return false;
-    }
+	public boolean update(UserInfo userInfo) {
+		return this.update(userInfo, true);
+	}
+
+	public boolean update(UserInfo userInfo, boolean passwordEncoder) {
+		ChangePassword changePassword = null;
+		if(passwordEncoder) {
+			changePassword = this.passwordEncoder(userInfo);
+		}
+		if (super.update(userInfo)) {
+			if(provisionService.getApplicationConfig().isProvisionSupport()) {
+				UserInfo loadUserInfo = findUserRelated(userInfo.getId());
+				accountUpdate(loadUserInfo);
+				provisionService.send(
+						ProvisionTopic.USERINFO_TOPIC,
+						loadUserInfo,
+						ProvisionAction.UPDATE_ACTION);
+			}
+			if(userInfo.getPassword() != null && changePassword != null) {
+				changePasswordProvisioning(changePassword);
+			}
+			return true;
+		}
+		return false;
+	}
 	
 	public boolean delete(UserInfo userInfo) {
 	    UserInfo loadUserInfo = null;

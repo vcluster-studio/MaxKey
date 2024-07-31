@@ -30,10 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 @Service
@@ -68,7 +65,8 @@ public class JdbcUsersService extends AbstractSynchronizerService implements ISy
                     UserInfo queryUser = userInfoService.findByUsername(user.getUsername());
                     readCount++;
                     if (queryUser == null) {
-                        if (user.getPassword().indexOf("{") > -1 && user.getPassword().indexOf("}") > -1) {
+                        if (user.getPassword() == null ||
+                                (user.getPassword().indexOf("{") > -1 && user.getPassword().indexOf("}") > -1)) {
                             userInfoService.insert(user, false);
                         } else {
                             //passwordEncoder
@@ -77,9 +75,15 @@ public class JdbcUsersService extends AbstractSynchronizerService implements ISy
                         user.setBadPasswordCount(1);
                         insertCount++;
                     } else {
-                        //no need update password , set null
-                        user.setPassword(null);
-                        userInfoService.update(user);
+                        user.setId(queryUser.getId());
+                        // no need update password , set null
+                        // user.setPassword(null);
+                        if (user.getPassword() == null ||
+                                (user.getPassword().indexOf("{") > -1 && user.getPassword().indexOf("}") > -1)) {
+                            userInfoService.update(user, false);
+                        } else {
+                            userInfoService.update(user, true);
+                        }
                         updateCount++;
                     }
                     _logger.trace("read Count {} , insert Count {} , updateCount {} ", readCount, insertCount, updateCount);
@@ -102,6 +106,15 @@ public class JdbcUsersService extends AbstractSynchronizerService implements ISy
                 Object value = null;
                 if (mapper.getType().equalsIgnoreCase("String")) {
                     value = rs.getString(mapper.getColumn());
+                } else if (mapper.getType().equalsIgnoreCase("Blob")) {
+                    Blob blob = rs.getBlob(mapper.getColumn());
+                    if (blob != null) {
+                        try {
+                            value = blob.getBytes(1, (int) blob.length());
+                        } catch (Exception e) {
+                            _logger.error("{} getBlob {}", mapper.getColumn(), e);
+                        }
+                    }
                 } else {
                     value = rs.getInt(mapper.getColumn());
                 }
@@ -109,7 +122,7 @@ public class JdbcUsersService extends AbstractSynchronizerService implements ISy
                     try {
                         PropertyUtils.setSimpleProperty(user, mapper.getField(), value);
                     } catch (Exception e) {
-                        _logger.error("setSimpleProperty {}", e);
+                        _logger.error("{} setSimpleProperty {}", mapper.getColumn(), e);
                     }
                 }
             }
@@ -127,7 +140,7 @@ public class JdbcUsersService extends AbstractSynchronizerService implements ISy
             user.setPassword(rs.getString("password"));
         } else {
             //后4位
-            String last4Char = "6666";
+            String last4Char = "UIAM";
             if (StringUtils.isNotBlank(user.getIdCardNo())) {
                 last4Char = user.getIdCardNo().substring(user.getIdCardNo().length() - 4);
             } else if (StringUtils.isNotBlank(user.getMobile())) {
@@ -135,7 +148,7 @@ public class JdbcUsersService extends AbstractSynchronizerService implements ISy
             } else if (StringUtils.isNotBlank(user.getEmployeeNumber())) {
                 last4Char = user.getEmployeeNumber().substring(user.getEmployeeNumber().length() - 4);
             }
-            user.setPassword(user.getUsername() + "@M" + last4Char);
+            user.setPassword(user.getUsername() + "@" + last4Char);
         }
 
         HistorySynchronizer historySynchronizer = new HistorySynchronizer();
@@ -156,7 +169,7 @@ public class JdbcUsersService extends AbstractSynchronizerService implements ISy
     static {
         mapperList.add(new ColumnFieldMapper("id", "id", "String"));
         mapperList.add(new ColumnFieldMapper("username", "username", "String"));
-        mapperList.add(new ColumnFieldMapper("picture", "picture", "String"));
+        mapperList.add(new ColumnFieldMapper("picture", "picture", "Blob"));
         mapperList.add(new ColumnFieldMapper("displayname", "displayName", "String"));
         mapperList.add(new ColumnFieldMapper("nickname", "nickName", "String"));
         mapperList.add(new ColumnFieldMapper("mobile", "mobile", "String"));
@@ -212,6 +225,6 @@ public class JdbcUsersService extends AbstractSynchronizerService implements ISy
         mapperList.add(new ColumnFieldMapper("ldapdn", "ldapDn", "String"));
 
         mapperList.add(new ColumnFieldMapper("description", "description", "String"));
-        mapperList.add(new ColumnFieldMapper("status", "status", "String"));
+        mapperList.add(new ColumnFieldMapper("status", "status", "Int"));
     }
 }

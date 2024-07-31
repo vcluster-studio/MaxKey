@@ -20,13 +20,8 @@ package org.dromara.maxkey.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import jakarta.persistence.*;
 import org.dromara.mybatis.jpa.entity.JpaEntity;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 
 /**
  * .
@@ -55,6 +50,8 @@ public class HistorySystemLogs extends JpaEntity implements Serializable {
     String username;
     @Column
     String displayName;
+	@Temporal(TemporalType.TIMESTAMP)
+	@GeneratedValue
     @Column
     Date executeTime;
 	@Column
