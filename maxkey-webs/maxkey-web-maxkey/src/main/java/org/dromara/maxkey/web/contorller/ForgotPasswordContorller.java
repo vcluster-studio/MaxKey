@@ -90,6 +90,7 @@ public class ForgotPasswordContorller {
 	@Autowired
 	private PasswordPolicyService passwordPolicyService;
 
+	@ResponseBody
 	@RequestMapping(value={"/passwordpolicy"}, produces = {MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<?> passwordpolicy(){
 		PasswordPolicy passwordPolicy = passwordPolicyService.get(WebContext.getInst().getId());
